@@ -1024,6 +1024,25 @@ const server = http.createServer((req, res) => {
       } catch (e) { return sendJSON(res, 500, { error: 'read fail' }); }
     }
     if (req.method === 'DELETE') {
+      // ?after=<ts> of ?pinonly=1 -> selectief wissen; anders het hele bestand.
+      const after = Number(url.searchParams.get('after'));
+      const pinOnly = url.searchParams.get('pinonly') === '1';
+      if ((after && after > 0) || pinOnly) {
+        try {
+          const lines = fs.existsSync(BETA_LABEL_FILE) ? fs.readFileSync(BETA_LABEL_FILE, 'utf8').trim().split('\n') : [];
+          let removed = 0;
+          const keep = lines.filter(Boolean).filter(l => {
+            let o; try { o = JSON.parse(l); } catch (e) { return true; }
+            const isPin = o.pin === pin;
+            const afterCut = (after && after > 0) ? ((o.ts || 0) >= after) : true;
+            const drop = isPin && afterCut;
+            if (drop) removed++;
+            return !drop;
+          });
+          fs.writeFileSync(BETA_LABEL_FILE, keep.join('\n') + (keep.length ? '\n' : ''));
+          return sendJSON(res, 200, { ok: true, removed });
+        } catch (e) { return sendJSON(res, 500, { error: 'delete fail' }); }
+      }
       try { if (fs.existsSync(BETA_LABEL_FILE)) fs.unlinkSync(BETA_LABEL_FILE); } catch (e) {}
       return sendJSON(res, 200, { ok: true });
     }
