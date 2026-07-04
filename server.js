@@ -1005,6 +1005,7 @@ const server = http.createServer((req, res) => {
           for (const r of rows) {
             fs.appendFileSync(BETA_LABEL_FILE, JSON.stringify({
               pin, l: r.l, m: (typeof r.m === 'number' ? r.m : null), w: r.w,
+              f: Array.isArray(r.f) ? r.f : null,
               gx: r.gx, gy: r.gy, gz: r.gz, am: r.am, gap: r.gap,
               hz: batch.hz, win: batch.win, weak: !!batch.weak,
               sport: (typeof batch.sport === 'number' ? batch.sport : null), ts: Date.now()
