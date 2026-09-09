@@ -882,7 +882,7 @@ const server = http.createServer((req, res) => {
         }
         if (body.favorite_sport !== undefined) {
           const fs = body.favorite_sport == null ? null : Number(body.favorite_sport);
-          if (fs != null && (!Number.isInteger(fs) || fs < 0 || fs > 5)) {
+          if (fs != null && (!Number.isInteger(fs) || fs < 0 || fs > 6)) {
             return sendJSON(res, 400, { error: 'bad_sport' });
           }
           fields.favorite_sport = fs;

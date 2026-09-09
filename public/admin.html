@@ -57,7 +57,7 @@ tr.clickable:hover{background:rgba(255,255,255,.04)}
 const $=s=>document.querySelector(s);
 let KEY=localStorage.getItem('rp_admin_key')||'';
 if(KEY)$('#key').value=KEY;
-const SPORTS=['Padel','Tennis','Pickleball','Tafeltennis','Badminton','Squash'];
+const SPORTS=['Padel','Tennis','Pickleball','Tafeltennis','Badminton','Squash','Racquetball'];
 const SPORTCOL=['#4ade80','#4ea3ff','#ffb84d','#ff6b54','#a78bfa','#e8c84d'];
 function fdate(ts){try{return new Date(ts).toLocaleString('nl-NL',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});}catch(e){return '?';}}
 function num(n){return new Intl.NumberFormat('nl-NL').format(Math.round(n||0));}
